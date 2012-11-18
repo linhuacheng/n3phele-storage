@@ -51,7 +51,7 @@ public class TestGoogleDrive {
     body.setDescription("A test document");
     body.setMimeType("text/plain");
     
-    java.io.File fileContent = new java.io.File("document.txt");
+    java.io.File fileContent = new java.io.File("test/gdrive/document.txt");
     FileContent mediaContent = new FileContent("text/plain", fileContent);
 
     File file = service.files().insert(body, mediaContent).execute();
