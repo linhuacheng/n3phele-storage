@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/annotations-api-6.0.20.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/aopalliance-1.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/asm-3.3.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/commons-codec-1.3.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/commons-fileupload-1.2.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/commons-logging-1.1.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/datanucleus-appengine-1.0.10.final.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/datanucleus-core-1.1.5.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/datanucleus-jpa-1.1.5.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/gae-aws-sdk-1.1.7.1.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/geronimo-jpa_3.0_spec-1.1.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/gson-2.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/guava-12.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/guice-3.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/guice-assistedinject-3.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/hpcloud-objectstorage-1.5.0-beta.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jackson-core-asl-1.9.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jackson-jaxrs-1.9.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jackson-mapper-asl-1.9.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/javax.inject-1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jclouds-blobstore-1.5.0-beta.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jclouds-core-1.5.0-beta.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jclouds-gae-1.5.0-beta.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jdo2-api-2.3-eb.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jersey-client-1.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jersey-core-1.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jersey-json-1.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jersey-server-1.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jersey-servlet-1.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jettison-1.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jsr250-api-1.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jsr305-1.3.9.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/jsr311-api-1.1.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/oauth-20100527.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/objectify-3.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/openstack-common-1.5.0-beta.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/rocoto-6.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/swift-1.5.0-beta.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/war/WEB-INF/lib/google-api-services-drive-v2-rev5-1.7.2-beta.jar!/" />
+    <varelement var="jar://$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar!/" value="M2_HOME/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/commons-logging-1.1.1.jar!/" value="GDRIVE_LIB/commons-logging-1.1.1.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-api-client-1.10.3-beta.jar!/" value="GDRIVE_LIB/google-api-client-1.10.3-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-api-client-android2-1.10.3-beta.jar!/" value="GDRIVE_LIB/google-api-client-android2-1.10.3-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-api-client-appengine-1.10.3-beta.jar!/" value="GDRIVE_LIB/google-api-client-appengine-1.10.3-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-api-client-servlet-1.10.3-beta.jar!/" value="GDRIVE_LIB/google-api-client-servlet-1.10.3-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-http-client-1.10.3-beta.jar!/" value="GDRIVE_LIB/google-http-client-1.10.3-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-http-client-android2-1.10.3-beta.jar!/" value="GDRIVE_LIB/google-http-client-android2-1.10.3-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-http-client-android3-1.10.3-beta.jar!/" value="GDRIVE_LIB/google-http-client-android3-1.10.3-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-http-client-appengine-1.10.3-beta.jar!/" value="GDRIVE_LIB/google-http-client-appengine-1.10.3-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-oauth-client-1.10.1-beta.jar!/" value="GDRIVE_LIB/google-oauth-client-1.10.1-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-oauth-client-appengine-1.10.1-beta.jar!/" value="GDRIVE_LIB/google-oauth-client-appengine-1.10.1-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/google-oauth-client-servlet-1.10.1-beta.jar!/" value="GDRIVE_LIB/google-oauth-client-servlet-1.10.1-beta.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/gson-2.1.jar!/" value="GDRIVE_LIB/gson-2.1.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/guava-11.0.1.jar!/" value="GDRIVE_LIB/guava-11.0.1.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/httpclient-4.0.3.jar!/" value="GDRIVE_LIB/httpclient-4.0.3.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/httpcore-4.0.1.jar!/" value="GDRIVE_LIB/httpcore-4.0.1.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/jackson-core-asl-1.9.4.jar!/" value="GDRIVE_LIB/jackson-core-asl-1.9.4.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/jdo2-api-2.3-eb.jar!/" value="GDRIVE_LIB/jdo2-api-2.3-eb.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/jsr305-1.3.9.jar!/" value="GDRIVE_LIB/jsr305-1.3.9.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/protobuf-java-2.2.0.jar!/" value="GDRIVE_LIB/protobuf-java-2.2.0.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/transaction-api-1.1.jar!/" value="GDRIVE_LIB/transaction-api-1.1.jar" />
+    <varelement var="jar://$GDRIVE_LIB$/xpp3-1.1.4c.jar!/" value="GDRIVE_LIB/xpp3-1.1.4c.jar" />
+    <conelement value="com.google.appengine.eclipse.core.GAE_CONTAINER/v2" />
+    <src_description expected_position="40">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
+      <src_folder value="file://$MODULE_DIR$/test" expected_position="41" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/war/WEB-INF/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module-library">
+      <library name="annotations-api-6.0.20.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/annotations-api-6.0.20.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="aopalliance-1.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/aopalliance-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="asm-3.3.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/asm-3.3.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-codec-1.3.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/commons-codec-1.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-fileupload-1.2.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/commons-fileupload-1.2.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-logging-1.1.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/commons-logging-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="datanucleus-appengine-1.0.10.final.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/datanucleus-appengine-1.0.10.final.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="datanucleus-core-1.1.5.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/datanucleus-core-1.1.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="datanucleus-jpa-1.1.5.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/datanucleus-jpa-1.1.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="gae-aws-sdk-1.1.7.1.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/gae-aws-sdk-1.1.7.1.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="geronimo-jpa_3.0_spec-1.1.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/geronimo-jpa_3.0_spec-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="geronimo-jta_1.1_spec-1.1.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="gson-2.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/gson-2.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="guava-12.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/guava-12.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="guice-3.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/guice-3.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="guice-assistedinject-3.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/guice-assistedinject-3.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="hpcloud-objectstorage-1.5.0-beta.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/hpcloud-objectstorage-1.5.0-beta.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-core-asl-1.9.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jackson-core-asl-1.9.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-jaxrs-1.9.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jackson-jaxrs-1.9.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-mapper-asl-1.9.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jackson-mapper-asl-1.9.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="javax.inject-1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/javax.inject-1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jclouds-blobstore-1.5.0-beta.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jclouds-blobstore-1.5.0-beta.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jclouds-core-1.5.0-beta.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jclouds-core-1.5.0-beta.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jclouds-gae-1.5.0-beta.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jclouds-gae-1.5.0-beta.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jdo2-api-2.3-eb.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jdo2-api-2.3-eb.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jersey-client-1.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jersey-client-1.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jersey-core-1.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jersey-core-1.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jersey-json-1.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jersey-json-1.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jersey-server-1.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jersey-server-1.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jersey-servlet-1.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jersey-servlet-1.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jettison-1.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jettison-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jsr250-api-1.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jsr250-api-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jsr305-1.3.9.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jsr305-1.3.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jsr311-api-1.1.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/jsr311-api-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="oauth-20100527.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/oauth-20100527.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="objectify-3.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/objectify-3.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="openstack-common-1.5.0-beta.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/openstack-common-1.5.0-beta.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="rocoto-6.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/rocoto-6.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="swift-1.5.0-beta.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/swift-1.5.0-beta.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="junit4">
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="servlet-api-2.4.jar">
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="com.google.appengine.eclipse.core.GAE_CONTAINER/v2" level="application" />
+    <orderEntry type="module-library">
+      <library name="google-api-services-drive-v2-rev5-1.7.2-beta.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/war/WEB-INF/lib/google-api-services-drive-v2-rev5-1.7.2-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-logging-1.1.1.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/commons-logging-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-api-client-1.10.3-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-api-client-1.10.3-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-api-client-android2-1.10.3-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-api-client-android2-1.10.3-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-api-client-appengine-1.10.3-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-api-client-appengine-1.10.3-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-api-client-servlet-1.10.3-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-api-client-servlet-1.10.3-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-http-client-1.10.3-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-http-client-1.10.3-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-http-client-android2-1.10.3-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-http-client-android2-1.10.3-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-http-client-android3-1.10.3-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-http-client-android3-1.10.3-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-http-client-appengine-1.10.3-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-http-client-appengine-1.10.3-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-oauth-client-1.10.1-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-oauth-client-1.10.1-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-oauth-client-appengine-1.10.1-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-oauth-client-appengine-1.10.1-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="google-oauth-client-servlet-1.10.1-beta.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/google-oauth-client-servlet-1.10.1-beta.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="gson-2.1.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/gson-2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="guava-11.0.1.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/guava-11.0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="httpclient-4.0.3.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/httpclient-4.0.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="httpcore-4.0.1.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/httpcore-4.0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-core-asl-1.9.4.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/jackson-core-asl-1.9.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jdo2-api-2.3-eb.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/jdo2-api-2.3-eb.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jsr305-1.3.9.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/jsr305-1.3.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="protobuf-java-2.2.0.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/protobuf-java-2.2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="transaction-api-1.1.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/transaction-api-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xpp3-1.1.4c.jar">
+        <CLASSES>
+          <root url="jar://$GDRIVE_LIB$/xpp3-1.1.4c.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+
