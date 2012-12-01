@@ -12,13 +12,14 @@ public class RepositoryStore {
 	
 	static {
 		//adding a sample repository
-		Credential nigelCredential = new Credential("nigel.cook@hp.com:11520587032204", "changeme").encrypt();
-		Repository repo = new Repository("repo1", "repo1 description", nigelCredential, URI.create("https://region-a.geo-1.identity.hpcloudsvc.com:35357"), "ddd", "Swift", null, false);
+		Credential nigelCredential = new Credential("AKIAJQ4UK2TUFDOI3ZQA", "pODzu2s8SfmgQE1LRRANS32zLLQjWqOBHxvoOcMP").encrypt();
+		Repository repo = new Repository("repo1", "repo1 description", nigelCredential, URI.create("https://s3.amazonaws.com"), "n3phele-test", "S3", null, true);
 		repositoryMap.put(1, repo);
 		
 		//add additional repositories
 	}
 	public static final Repository getRepositoryById(Integer repoId) {
+		
 		if (repositoryMap.get(repoId) != null){
 			return repositoryMap.get(repoId);
 		}

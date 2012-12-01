@@ -15,7 +15,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jpa_3.0_spec-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-12.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-12.0.jar" sourcepath="C:/Users/ckempaiah/.m2/repository/com/google/guava/guava/12.0/guava-12.0-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-3.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-3.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hpcloud-objectstorage-1.5.0-beta.1.jar"/>
@@ -68,5 +68,11 @@
 	<classpathentry kind="var" path="GDRIVE_LIB/protobuf-java-2.2.0.jar"/>
 	<classpathentry kind="var" path="GDRIVE_LIB/transaction-api-1.1.jar"/>
 	<classpathentry kind="var" path="GDRIVE_LIB/xpp3-1.1.4c.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-http-client-1.11.0-beta.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-http-client-jackson2-1.11.0-beta.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-client-1.4.0-alpha.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-services-tasks-v1-rev5-1.12.0-beta.jar"/>
+	<classpathentry kind="var" path="GOOGLE_HTTP_CLIENT/libs/gson-2.1.jar"/>
+	<classpathentry kind="var" path="GOOGLE_HTTP_CLIENT/libs/jackson-core-2.0.5.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
