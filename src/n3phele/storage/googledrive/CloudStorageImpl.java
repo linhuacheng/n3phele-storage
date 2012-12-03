@@ -376,9 +376,10 @@ public class CloudStorageImpl implements CloudStorageInterface {
 
                 query = "title contains '"+ prefix +"'";
             }
-            String rootFileId = getRootFileId(repo);
-            if (rootFileId != null && rootFileId.length()>0)
-                query = query + "'" + rootFileId + "' in parents";
+            //TODO:CK, commenting as it was not working, check with Cheng about it
+//            String rootFileId = getRootFileId(repo);
+//            if (rootFileId != null && rootFileId.length()>0)
+//                query = query + "'" + rootFileId + "' in parents";
 
             if (query != null){
                 list = drive.files().list().setQ(query);
