@@ -18,6 +18,9 @@ public abstract class CloudStorage implements CloudStorageInterface {
 		if("Swift".equalsIgnoreCase(type)) {
 			return new n3phele.storage.swift.CloudStorageImpl();
 		}
+		if("Drive".equalsIgnoreCase(type)) {
+			return new n3phele.storage.googledrive.CloudStorageImpl();
+		}
 		throw new IllegalArgumentException("Unknown Cloud storage type: "+type);
 	}
 	public static CloudStorageInterface factory(Repository repo) {
