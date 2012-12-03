@@ -1,6 +1,5 @@
 package gdrive;
 
-import java.io.File;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -10,15 +9,8 @@ import n3phele.service.model.repository.Repository;
 import n3phele.service.model.store.RepositoryStore;
 import n3phele.storage.googledrive.CloudStorageImpl;
 
-
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson.JacksonFactory;
-import com.google.api.services.drive.DriveScopes;
 
 public class GDriveFileListTest {
 	
@@ -47,6 +39,22 @@ public class GDriveFileListTest {
 
 		Assert.assertEquals(1, result.size());
 
+	}
+	
+	@Test
+	public void testCreateBucket() {
+		unit.createBucket(repo);
+		
+		boolean bucketFound = false;
+		List<FileNode> result = unit.getFileList(repo, "", -1);
+		for (FileNode file: result) {
+			if (repo.getRoot().equals(file.getName())) {
+				bucketFound = true;
+				break;
+			}
+		}
+						
+		Assert.assertTrue("Bucket not found.", bucketFound);
 	}
 	
 }
