@@ -31,6 +31,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.Drive.Children;
 import com.google.api.services.drive.Drive.Files;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.ChildList;
@@ -97,12 +98,11 @@ public class CloudStorageImpl implements CloudStorageInterface {
 
 	@Override
 	public FileNode getMetadata(Repository repo, String filename) {
-		FileNode f = new FileNode();
+		FileNode file = new FileNode();
 		log.info("Get info on " + repo.getRoot() + " " + filename);
 		try {
-			File info = this.getFile(repo, repo.getRoot(), filename);
+			File info = this.getFile(repo, filename);
 
-			FileNode file;
 			if (GOOGLE_FOLDER_MIME_TYPE.equals(info.getMimeType())) {
 				String name = info.getTitle();
 				boolean isPublic = false;
@@ -127,17 +127,17 @@ public class CloudStorageImpl implements CloudStorageInterface {
 				file.setMime(info.getMimeType());
 			}
 			log.info("File:" + file);
-			log.info(filename + " " + f.getModified() + " " + f.getSize());
+			log.info(filename + " " + file.getModified() + " " + file.getSize());
 		} catch (NotFoundException e) {
-			log.log(Level.WARNING, "Service Error processing " + f + repo, e);
+			log.log(Level.WARNING, "Service Error processing " + file + repo, e);
 			throw new NotFoundException("Retrieve " + filename + " fails "
 					+ e.toString());
 		} catch (Exception e) {
-			log.log(Level.SEVERE, "Client Error processing " + f + repo, e);
+			log.log(Level.SEVERE, "Client Error processing " + file + repo, e);
 			throw new NotFoundException("Retrieve " + filename + " fails "
 					+ e.toString());
 		}
-		return f;
+		return file;
 	}
 
 	@Override
@@ -145,10 +145,10 @@ public class CloudStorageImpl implements CloudStorageInterface {
 		boolean result = false;
 		log.info("Deleting file on " + repo.getRoot() + " " + filename);
 		try {
-			File file = getFile(repo, repo.getRoot(), filename);
+			File file = getFile(repo, filename);
 			Drive drive = getGoogleDrive(repo);
 		
-			drive.files().delete(file.getId());
+			drive.files().delete(file.getId()).execute();
 			log.info("File deleted " + repo.getRoot() + " " + filename);
 			result = true;
 		} catch (NotFoundException e) {
@@ -171,15 +171,26 @@ public class CloudStorageImpl implements CloudStorageInterface {
 		boolean result = false;
 		log.info("Deleting folder on " + repo.getRoot() + " " + filename);
 		try {
-			File folder = getFile(repo, repo.getRoot(), filename, true);
 			Drive drive = getGoogleDrive(repo);
-		
-			ChildList childs = drive.children().list(folder.getId()).execute();
-			for (ChildReference child: childs.getItems()) {
-				drive.children().delete(folder.getId(), child.getId());
-				log.info("Child files deleted " + folder.getId() + " - " +  child.getId());
+			String rootFileId = this.getRootFileId(repo);
+			if (rootFileId == null || rootFileId.length() ==0) {
+				throw new NotFoundException(repo.getRoot());
 			}
-
+			
+			String query = "'"+ rootFileId + "' in parents";
+			Files.List request = drive.files().list().setQ(query);
+			FileList files = request.execute();
+			for (File file: files.getItems()) {
+				// if there is no prefix, this means clear the folder
+				if (filename == null || filename.length() == 0) {
+					drive.files().delete(file.getId()).execute();
+					log.info("Child files deleted " + rootFileId + " - " +  file.getId());
+				} else if(file.getTitle().startsWith(filename)) {
+					// if the prefix matches, delete the file
+					drive.files().delete(file.getId()).execute();
+					log.info("Child files deleted " + rootFileId + " - " +  file.getId());		
+				}
+			}
 			log.info("Folder files deleted " + repo.getRoot() + " " + filename);
 			result = true;
 		} catch (NotFoundException e) {
@@ -204,7 +215,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
 		log.info("Setting file permission on " + repo.getRoot() + " " + filename + " to " + (isPublic?"public": "private"));
 
 		try {
-			File file = this.getFile(repo, repo.getRoot(), filename);
+			File file = this.getFile(repo, filename);
 			Drive drive = getGoogleDrive(repo);
 		
 			// Insert public permission
@@ -239,7 +250,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
 	@Override
 	public boolean checkExists(Repository repo, String filename) {
 		try {
-			File file = getFile(repo, repo.getRoot(), filename);
+			File file = getFile(repo, filename);
 			return (file != null);
 		} catch (NotFoundException nfe) {
 			return false;
@@ -247,40 +258,25 @@ public class CloudStorageImpl implements CloudStorageInterface {
 
 	}
 
-	private File getFile(Repository repo, String parentTitle, String fileName) {
-		return getFile(repo, parentTitle, fileName, false);
+	private File getFile(Repository repo, String fileName) {
+		return getFile(repo, fileName, false);
 	}
 	
-	private File getFile(Repository repo, String parentTitle, String filename, boolean folder) {
-		
-		String parentId;
-		Files.List request;
-
-		// Get the id of parent folder
+	private File getFile(Repository repo, String filename, boolean folder) {
+	 // Get the id of parent folder
 		try {
 			Drive drive = getGoogleDrive(repo);
-		
-			String query = "title = '" + parentTitle + "'";
-			if (folder) {
-				query += "and mimeType = '" + GOOGLE_FOLDER_MIME_TYPE + "'";
+			String rootFileId = this.getRootFileId(repo);
+			if (rootFileId == null || rootFileId.length() ==0) {
+				throw new NotFoundException(repo.getRoot());
 			}
-			request = drive.files().list().setQ(query);
+
+			String query = "'"+ rootFileId + "' in parents";
+			Files.List request = drive.files().list().setQ(query);
 			FileList files = request.execute();
-			if (files.getItems().size() > 0) {
-				parentId = files.getItems().get(0).getId();
-			} else {
-				throw new NotFoundException(parentTitle);
-			}
-
-			request = drive
-					.files()
-					.list()
-					.setQ("'" + parentId + "' in parents and title = '"
-							+ filename + "'");
-
-			files = request.execute();
-			if (files.getItems().size() > 0) {
-				return files.getItems().get(0);
+			for (File file: files.getItems()) {
+				if (file.getTitle().equals(filename))
+					return file;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -300,7 +296,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
 	public URI getRedirectURL(Repository repo, String path, String filename) {
 		log.info("Getting redirect URL for " + repo.getRoot() + " " + filename);
 		
-		File file = getFile(repo, repo.getRoot(), filename);	
+		File file = getFile(repo, filename);	
 		return URI.create(file.getDownloadUrl());
 	}
 	
@@ -339,6 +335,26 @@ public class CloudStorageImpl implements CloudStorageInterface {
 		return drive;
 	}
 
+	public String getRootFileId(Repository repo) {
+		String fileId = "";
+		Drive drive;
+		try {
+			drive = getGoogleDrive(repo);
+			 
+			FileList files = drive.files().list()
+						.setQ("title = '" + repo.getRoot() + "' and mimeType = '"
+								+ GOOGLE_FOLDER_MIME_TYPE + "'").execute();
+				
+			if (files.getItems().size() >0) {
+				fileId = files.getItems().get(0).getId();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return fileId;
+	}
+	
+	
 	@Override
 	public List<FileNode> getFileList(Repository repo, String prefix, int max) {
 
@@ -349,6 +365,11 @@ public class CloudStorageImpl implements CloudStorageInterface {
 			log.log(Level.INFO, "Credential " + gCredential);
 			Drive drive = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, gCredential).build();
 			com.google.api.services.drive.Drive.Files.List list = drive.files().list();
+			// Limit file list to repostory root folder
+			String rootFileId = getRootFileId(repo);
+			if (rootFileId != null && rootFileId.length()>0)
+				list = list.setQ("'" + rootFileId + "' in parents");
+
 			if (list != null) {
 				FileList fileList = list.execute();
 				for (File file : fileList.getItems()) {
@@ -376,7 +397,6 @@ public class CloudStorageImpl implements CloudStorageInterface {
 					fileNodeList.add(fileNode);
 				}
 			}
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			log.log(Level.WARNING, "Exception: " + e.getMessage());
@@ -424,6 +444,15 @@ public class CloudStorageImpl implements CloudStorageInterface {
 			InputStreamContent streamContent = new InputStreamContent(contentType, new ByteArrayInputStream(outputStream.toByteArray()));
 			streamContent.setLength(length);
 			file = drive.files().insert(meta, streamContent).execute();
+			
+			// Add reference to repository root folder
+			String rootFileId = getRootFileId(repo);
+			if (rootFileId != null && rootFileId.length()>0) {
+				ChildReference newChild = new ChildReference();
+				newChild.setId(file.getId());
+				drive.children().insert(rootFileId, newChild).execute();
+			}
+		
 			fileUri = file != null ? new URI(file.getDownloadUrl().toString()): null;
 			log.log(Level.INFO, "File Id:" + file.getId());
 		} catch (IOException e) {
