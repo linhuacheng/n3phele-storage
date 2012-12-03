@@ -1,5 +1,9 @@
 package gdrive;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -29,8 +33,10 @@ public class GDriveFileListTest {
 
 
 	@Test
-	public void testPutObject(){
-		unit.putObject(repo, null, "text/plain", "");
+	public void testPutObject() throws FileNotFoundException{
+		File file = new File("test/gdrive/document.txt");
+		InputStream inputStream = new FileInputStream(file);
+		unit.putObject(repo, inputStream, "text/plain", "document.txt");
 		
 	}
 	@Test

@@ -1,8 +1,12 @@
 package n3phele.storage.googledrive;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +26,7 @@ import n3phele.storage.ObjectStream;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -394,33 +399,42 @@ public class CloudStorageImpl implements CloudStorageInterface {
 	@Override
 	public URI putObject(Repository repo, InputStream uploadedInputStream,
 			String contentType, String destination) {
-
+		File file = null;
+		URI fileUri = null;
 		try {
 			GoogleCredential gCredential = getGoogleCredential(repo.getCredential());
 			Drive drive = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY,
 					gCredential).build();
-			File file = new File();
-			file.setTitle("Sample File1");
-			file.setDescription("Gdrive sample upload");
-			file.setMimeType(contentType);
-			file.setEditable(true);
-
-			java.io.File fileContent = new java.io.File(
-					"test/gdrive/document.txt");
-			FileContent mediaContent = new FileContent("text/plain",
-					fileContent);
-			file = drive.files().insert(file, mediaContent).execute();
+			File meta = new File();
+			//CK, assuming destination is file name, destination might have parent folder name which is not accounted for
+			meta.setTitle(destination);
+			meta.setMimeType(contentType);
+			meta.setEditable(true);
+			
+			BufferedInputStream bufferedStream = new BufferedInputStream(uploadedInputStream);
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream(2048);			
+			byte[] buf = new byte[1024];
+			int length = 0;
+			int readBytes = 0;
+			while ((readBytes = bufferedStream.read(buf, 0, buf.length)) > 0){
+				outputStream.write(buf, 0, readBytes);
+				length = length + readBytes;
+				
+			}
+			InputStreamContent streamContent = new InputStreamContent(contentType, new ByteArrayInputStream(outputStream.toByteArray()));
+			streamContent.setLength(length);
+			file = drive.files().insert(meta, streamContent).execute();
+			fileUri = file != null ? new URI(file.getDownloadUrl().toString()): null;
 			log.log(Level.INFO, "File Id:" + file.getId());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.log(Level.SEVERE,e.getMessage(), e);
 		} catch (GeneralSecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.log(Level.SEVERE,e.getMessage(), e);
+		} catch (URISyntaxException e){
+			log.log(Level.SEVERE,e.getMessage(), e);
 		}
 
-		// TODO Auto-generated method stub
-		return null;
+		return fileUri;
 	}
 
 	@Override
