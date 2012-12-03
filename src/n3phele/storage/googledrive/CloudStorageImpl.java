@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
@@ -13,6 +14,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.StreamingOutput;
 
 import n3phele.service.core.ForbiddenException;
 import n3phele.service.core.NotFoundException;
@@ -25,6 +29,8 @@ import n3phele.storage.ObjectStream;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.FileContent;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -51,6 +57,8 @@ public class CloudStorageImpl implements CloudStorageInterface {
 
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	private static String GOOGLE_FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
+	
+	public static final String GOOGLE_DRIVE_TYPE = "GoogleDrive";
 	
 	@Override
 	public boolean createBucket(Repository repo) throws ForbiddenException {
@@ -306,14 +314,14 @@ public class CloudStorageImpl implements CloudStorageInterface {
 	
 	@Override
 	public UploadSignature getUploadSignature(Repository repo, String name) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public boolean hasTemporaryURL(Repository repo) {
-		// TODO Auto-generated method stub
-		return false;
+		//google drive support temporary url
+		return true;
 	}
 
 	private GoogleCredential getGoogleCredential(Credential cred) throws IOException,
@@ -344,11 +352,17 @@ public class CloudStorageImpl implements CloudStorageInterface {
 
 		List<FileNode> fileNodeList = new ArrayList<FileNode>();
 		try {
-
-			GoogleCredential gCredential = getGoogleCredential(repo.getCredential());
-			log.log(Level.INFO, "Credential " + gCredential);
-			Drive drive = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, gCredential).build();
-			com.google.api.services.drive.Drive.Files.List list = drive.files().list();
+			com.google.api.services.drive.Drive.Files.List list = null;
+			String query;
+			Drive drive = getGoogleDrive(repo);
+			if (prefix != null && !prefix.trim().isEmpty()){
+				prefix = prefix.trim();
+				query = "title contains '"+ prefix +"'";
+				list = drive.files().list().setQ(query);	
+			} else {
+				list = drive.files().list();	
+			}
+			
 			if (list != null) {
 				FileList fileList = list.execute();
 				for (File file : fileList.getItems()) {
@@ -373,18 +387,18 @@ public class CloudStorageImpl implements CloudStorageInterface {
 						fileNode.setMime(file.getMimeType());
 					}
 					log.log(Level.INFO, "File Title " + file.getTitle());
+					//check for max and break
+					if(max > 0 && fileNodeList.size() > max) {
+						break;
+					}
 					fileNodeList.add(fileNode);
 				}
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			log.log(Level.WARNING, "Exception: " + e.getMessage());
-			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			log.log(Level.WARNING, "Exception: " + e.getMessage());
-			e.printStackTrace();
 		}
 
 		return fileNodeList;
@@ -392,8 +406,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
 
 	@Override
 	public String getType() {
-		// TODO Auto-generated method stub
-		return null;
+		return GOOGLE_DRIVE_TYPE;
 	}
 
 	@Override
@@ -401,10 +414,10 @@ public class CloudStorageImpl implements CloudStorageInterface {
 			String contentType, String destination) {
 		File file = null;
 		URI fileUri = null;
+		
 		try {
-			GoogleCredential gCredential = getGoogleCredential(repo.getCredential());
-			Drive drive = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY,
-					gCredential).build();
+			
+			Drive drive = getGoogleDrive(repo);
 			File meta = new File();
 			//CK, assuming destination is file name, destination might have parent folder name which is not accounted for
 			meta.setTitle(destination);
@@ -421,9 +434,14 @@ public class CloudStorageImpl implements CloudStorageInterface {
 				length = length + readBytes;
 				
 			}
+			boolean isPublic = repo.isPublic();
+			
 			InputStreamContent streamContent = new InputStreamContent(contentType, new ByteArrayInputStream(outputStream.toByteArray()));
 			streamContent.setLength(length);
 			file = drive.files().insert(meta, streamContent).execute();
+			if (file != null){
+				executePermission(drive, file, isPublic);
+			}
 			fileUri = file != null ? new URI(file.getDownloadUrl().toString()): null;
 			log.log(Level.INFO, "File Id:" + file.getId());
 		} catch (IOException e) {
@@ -436,18 +454,73 @@ public class CloudStorageImpl implements CloudStorageInterface {
 
 		return fileUri;
 	}
-
-	@Override
-	public ObjectStream getObject(Repository item, String path, String name) {
-
-		// TODO Auto-generated method stub
-		return null;
+	
+	private void executePermission(Drive drive, File file, boolean isPublic) throws IOException {
+		if (isPublic) {
+			  Permission permission = new Permission();
+			  permission.setValue("");
+			  permission.setType("anyone");
+			  permission.setRole("reader");
+			  drive.permissions().insert(file.getId(), permission).execute();
+		} else {
+			// Remove any public permissions		
+			PermissionList permissions = drive.permissions().list(file.getId()).execute();
+			for (Permission permission: permissions.getItems()){				
+				if ("anyone".equals(permission.getType()) && "reader".equals(permission.getRole())) {
+					drive.permissions().delete(file.getId(), permission.getId()).execute();
+				}
+			}
+		}
 	}
 
 	@Override
-	public URI getURL(Repository item, String path, String name) {
-		// TODO Auto-generated method stub
+	public ObjectStream getObject(Repository repo, String path, String name) {
+
+		File file = getFile(repo, path, name, false);
+		if (file!= null) {
+			String urlStr = file.getDownloadUrl();
+			Drive drive;
+			try {
+				drive = getGoogleDrive(repo);
+				HttpResponse resp = drive.getRequestFactory().buildGetRequest(new GenericUrl(urlStr)).execute();
+				final InputStream inputStream = resp.getContent();
+				
+				StreamingOutput output = new StreamingOutput() {
+					
+					
+					@Override
+					public void write(OutputStream outputStream) throws IOException,
+							WebApplicationException {
+						int i = 0;
+						while((i = inputStream.read()) != - 1){
+							outputStream.write(i);
+						}
+						
+					}
+				};
+				return new ObjectStream(output, resp.getContentType());
+			} catch (IOException e) {
+				log.log(Level.SEVERE,e.getMessage(), e);
+			} catch (GeneralSecurityException e) {
+				log.log(Level.SEVERE,e.getMessage(), e);
+			} 
+		}
 		return null;
+		
+	}
+
+	@Override
+	public URI getURL(Repository repo, String path, String name) {
+		URI fileUri = null;
+		File file = getFile(repo, path, name, false);
+		if (file!= null) {
+			try {
+				fileUri = file != null ? new URI(file.getDownloadUrl().toString()): null;
+			} catch (URISyntaxException e) {
+				log.log(Level.SEVERE,e.getMessage(), e);
+			}
+		}
+		return fileUri;
 	}
 
 }

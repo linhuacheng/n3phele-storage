@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -29,6 +30,7 @@ public class GDriveFileListTest {
 	public static void setUp() throws Exception {
 		unit = new CloudStorageImpl();
 		repo = RepositoryStore.getRepositoryById(2);
+		
 	}
 
 
@@ -36,14 +38,15 @@ public class GDriveFileListTest {
 	public void testPutObject() throws FileNotFoundException{
 		File file = new File("test/gdrive/document.txt");
 		InputStream inputStream = new FileInputStream(file);
-		unit.putObject(repo, inputStream, "text/plain", "document.txt");
+		URI path = unit.putObject(repo, inputStream, "text/plain", "document.txt");
+		Assert.assertNotNull(path);
 		
 	}
 	@Test
 	public void testgetTopOfList() {
-		List<FileNode> result = unit.getFileList(repo, "", -1);
+		List<FileNode> result = unit.getFileList(repo, "document", -1);
 
-		Assert.assertEquals(1, result.size());
+		Assert.assertNotNull(result.size());
 
 	}
 	
