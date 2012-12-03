@@ -12,10 +12,13 @@ public class RepositoryStore {
 	
 	static {
 		//adding a sample repository
-		Credential nigelCredential = new Credential("AKIAJQ4UK2TUFDOI3ZQA", "pODzu2s8SfmgQE1LRRANS32zLLQjWqOBHxvoOcMP").encrypt();
-		Repository repo = new Repository("repo1", "repo1 description", nigelCredential, URI.create("https://s3.amazonaws.com"), "n3phele-test", "S3", null, true);
+		Credential chanduAWSCreds = new Credential("AKIAJQ4UK2TUFDOI3ZQA", "pODzu2s8SfmgQE1LRRANS32zLLQjWqOBHxvoOcMP").encrypt();
+		Repository repo = new Repository("repo1", "repo1 description", chanduAWSCreds, URI.create("https://s3.amazonaws.com"), "n3phele-test", "S3", null, true);
 		repositoryMap.put(1, repo);
 		
+		Credential chanduGoogleCred = new Credential("181673875910@developer.gserviceaccount.com","test/gdrive/b64713b4d6f38c36d0dd5b4f83fee7d5bebc04af-privatekey.p12").encrypt();
+		Repository repo2 = new Repository("Google Drive Repo", "Google Drive Repo", chanduGoogleCred, URI.create("https://www.googleapis.com/drive/v2/files"), "n3phele-test", "Drive", null, true);
+		repositoryMap.put(2, repo2);
 		//add additional repositories
 	}
 	public static final Repository getRepositoryById(Integer repoId) {
