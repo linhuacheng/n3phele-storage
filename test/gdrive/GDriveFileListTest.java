@@ -49,9 +49,9 @@ public class GDriveFileListTest {
 	public void testPutObject() throws FileNotFoundException{
 		File file = new File("test/gdrive/document.txt");
 		InputStream inputStream = new FileInputStream(file);
-		URI path = unit.putObject(repo, inputStream, "text/plain", "document.txt");
+		URI path = unit.putObject(repo, inputStream, "text/plain", fileName);
 		Assert.assertNotNull(path);
-		
+	
 	}
 	@Test
 	public void testgetTopOfList() {
