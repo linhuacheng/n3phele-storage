@@ -308,7 +308,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
         log.info("Getting redirect URL for " + repo.getRoot() + " " + filename);
 
         File file = getFile(repo, filename);
-        return URI.create(file.getDownloadUrl());
+        return URI.create(file.getWebContentLink());
     }
 
     @Override
