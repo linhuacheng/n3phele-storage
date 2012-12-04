@@ -11,6 +11,7 @@ import n3phele.service.model.repository.UploadSignature;
 
 public abstract class CloudStorage implements CloudStorageInterface {
 
+	public static final String GDRIVE = "GDrive";
 	public static CloudStorageInterface factory(String type) {
 		if("S3".equalsIgnoreCase(type)) {
 			return new n3phele.storage.S3.CloudStorageImpl();
@@ -18,7 +19,7 @@ public abstract class CloudStorage implements CloudStorageInterface {
 		if("Swift".equalsIgnoreCase(type)) {
 			return new n3phele.storage.swift.CloudStorageImpl();
 		}
-		if("Drive".equalsIgnoreCase(type)) {
+		if(GDRIVE.equalsIgnoreCase(type)) {
 			return new n3phele.storage.googledrive.CloudStorageImpl();
 		}
 		throw new IllegalArgumentException("Unknown Cloud storage type: "+type);

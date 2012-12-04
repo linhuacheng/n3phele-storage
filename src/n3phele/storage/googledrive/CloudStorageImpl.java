@@ -24,6 +24,7 @@ import n3phele.service.model.core.Credential;
 import n3phele.service.model.repository.FileNode;
 import n3phele.service.model.repository.Repository;
 import n3phele.service.model.repository.UploadSignature;
+import n3phele.storage.CloudStorage;
 import n3phele.storage.CloudStorageInterface;
 import n3phele.storage.ObjectStream;
 
@@ -59,7 +60,6 @@ public class CloudStorageImpl implements CloudStorageInterface {
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
     private static String GOOGLE_FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
 
-    public static final String GOOGLE_DRIVE_TYPE = "GoogleDrive";
 
     @Override
     public boolean createBucket(Repository repo) throws ForbiddenException {
@@ -430,7 +430,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
 
     @Override
     public String getType() {
-        return GOOGLE_DRIVE_TYPE;
+        return CloudStorage.GDRIVE;
     }
 
     @Override
