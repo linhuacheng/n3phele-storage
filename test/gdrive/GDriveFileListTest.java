@@ -11,6 +11,7 @@ import junit.framework.Assert;
 import n3phele.service.model.core.Credential;
 import n3phele.service.model.repository.FileNode;
 import n3phele.service.model.repository.Repository;
+import n3phele.service.model.repository.UploadSignature;
 import n3phele.service.model.store.RepositoryStore;
 import n3phele.storage.googledrive.CloudStorageImpl;
 
@@ -60,7 +61,13 @@ public class GDriveFileListTest {
         Assert.assertNotNull(result.size());
 
     }
-
+    @Test
+    
+    public void testGetURL() throws Exception{
+    	testCreateBucket();
+    	testPutObject();
+    	unit.getURL(repo, "", fileName);
+    }
     @Test
     public void testGetMetadata() {
         FileNode meta = unit.getMetadata(repo, fileName);
@@ -83,6 +90,12 @@ public class GDriveFileListTest {
     @Test
     public void testDeleteFolder() throws FileNotFoundException {
         Assert.assertTrue("Folder was not deleted.", unit.deleteFolder(repo, fileName));
+    }
+
+    @Test
+    public void testGetUploadSignature(){
+    	UploadSignature uploadSignature = unit.getUploadSignature(repo, fileName);
+    	Assert.assertNotNull(uploadSignature);
     }
 
 }

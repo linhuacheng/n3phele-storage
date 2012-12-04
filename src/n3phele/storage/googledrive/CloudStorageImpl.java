@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.StreamingOutput;
+import javax.ws.rs.core.UriBuilder;
 
 import n3phele.service.core.ForbiddenException;
 import n3phele.service.core.NotFoundException;
@@ -28,6 +30,7 @@ import n3phele.storage.CloudStorage;
 import n3phele.storage.CloudStorageInterface;
 import n3phele.storage.ObjectStream;
 
+import com.amazonaws.services.s3.internal.Mimetypes;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.GenericUrl;
@@ -311,9 +314,29 @@ public class CloudStorageImpl implements CloudStorageInterface {
     @Override
     public UploadSignature getUploadSignature(Repository repo, String name) {
 
-        return null;
-    }
+    	UriBuilder path = UriBuilder.fromUri("http://changeme.appspot.com/repository/");
+		path.path(Long.toString(repo.getId()));
+		path.path("upload");
+		path.queryParam("name", name);
+		path.queryParam("path", "");
+		long expires = ((Calendar.getInstance().getTimeInMillis())/1000) + 30*60;
+		String signature = makeTemporaryCredential(expires, repo.getCredential().decrypt().getSecret(), repo.getRoot()+":"+name);
+		path.queryParam("expires", expires);
+		path.queryParam("signature", signature);
 
+		log.warning("Gateway Upload "+path.build().getPath()+" "+path.build());
+		
+		String contentType = Mimetypes.getInstance().getMimetype(name);
+		
+		UploadSignature result = new UploadSignature(name,"acl",path.build(), repo.getRoot(), "policy", "signature", "id", contentType);
+		return result;
+    }
+    
+	private String makeTemporaryCredential(long expires, String secret, String path) {
+		Credential temporary = Credential.encrypt(new Credential(path, path+expires), secret);
+		return temporary.getSecret();
+		
+	}
     @Override
     public boolean hasTemporaryURL(Repository repo) {
         //google drive support temporary url
@@ -546,7 +569,12 @@ public class CloudStorageImpl implements CloudStorageInterface {
         File file = getFile(repo, name, false);
         if (file!= null) {
             try {
-                fileUri = file != null ? new URI(file.getDownloadUrl().toString()): null;
+            	
+                fileUri = file != null ? new URI(file.getWebContentLink()): null;
+//                log.log(Level.INFO, "selfURL:" + file.getSelfLink());
+//                log.log(Level.INFO, "webContentLink:" + file.getWebContentLink());
+//                log.log(Level.INFO, "downloadUrl:" + file.getDownloadUrl());
+//                log.log(Level.INFO, "embedLink:" + file.getEmbedLink());
             } catch (URISyntaxException e) {
                 log.log(Level.SEVERE,e.getMessage(), e);
             }
