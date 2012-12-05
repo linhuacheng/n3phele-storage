@@ -27,10 +27,13 @@ import org.apache.commons.fileupload.util.Streams;
 
 import com.google.gson.Gson;
 
+import n3phele.service.core.ForbiddenException;
 import n3phele.service.model.repository.FileNode;
 import n3phele.service.model.repository.Repository;
+import n3phele.service.model.repository.UploadSignature;
 import n3phele.service.model.store.RepositoryStore;
 import n3phele.storage.CloudStorage;
+import n3phele.storage.ObjectStream;
 
 
 
@@ -182,5 +185,129 @@ public class StorageServiceResource  {
 			}
 			
 			//return Response.ok("hello world").build();	
+		}
+		
+		@Path("getMetaData")
+		@GET
+		@Produces("application/json")
+
+		//public FileNode getMetadata(Repository repo, String filename)
+		public Response getMetadata(@QueryParam("repoId") Integer repoId
+				, @QueryParam("filename") String filename){
+			Repository repository = RepositoryStore.getRepositoryById(repoId);
+			System.out.println("HP meta data ...... in service");
+			FileNode filenode = CloudStorage.factory().getMetadata(repository, filename);
+			System.out.println("HP meta data ...... in service");
+			Gson gson = new Gson();
+			String json = gson.toJson(filenode);
+			if (filenode != null){
+				return Response.ok(json).build();	
+			} else {
+				return Response.ok("No such File").build();	
+			}
+		}
+		
+		//public URI getURL(Repository item, String path, String name)
+		@Path("getURL")
+		@GET
+		@Produces("application/json")
+		public Response getURL(@QueryParam("repoId") Integer repoId
+				, @QueryParam("path") String path,
+				@QueryParam("name") String name){
+			Repository repository = RepositoryStore.getRepositoryById(repoId);
+			URI uri = CloudStorage.factory().getURL(repository, path, name);
+			Gson gson = new Gson();
+			String json = gson.toJson(uri);
+			if (uri != null){
+				return Response.ok(json).build();	
+			} else {
+				return Response.ok("no repository, url").build();	
+			}
+		}
+		
+		//public ObjectStream getObject(Repository item, String path, String name);
+		@Path("getObject")
+		@GET
+		@Produces("application/json")
+		public Response getObject(@QueryParam("repoId") Integer repoId
+				, @QueryParam("path") String path,
+				@QueryParam("name") String name){
+			Repository repository = RepositoryStore.getRepositoryById(repoId);
+			ObjectStream objstr = CloudStorage.factory().getObject(repository, path, name);
+			Gson gson = new Gson();
+			String json = gson.toJson(objstr);
+			if (objstr != null){
+				return Response.ok(json).build();	
+			} else {
+				return Response.ok("no repository, url").build();	
+			}
+		}
+		
+		//public UploadSignature getUploadSignature(Repository repo, String name);
+		@Path("getUploadSignature")
+		@GET
+		@Produces("application/json")
+		public Response getUploadSignature(@QueryParam("repoId") Integer repoId
+				,@QueryParam("name") String name){
+			Repository repository = RepositoryStore.getRepositoryById(repoId);
+			UploadSignature upsign = CloudStorage.factory().getUploadSignature(repository, name);
+			Gson gson = new Gson();
+			String json = gson.toJson(upsign);
+			if (upsign != null){
+				return Response.ok(json).build();	
+			} else {
+				return Response.ok("no signature").build();	
+			}
+		}
+		
+//		public URI getRedirectURL(Repository repo, String path, String filename);
+		@Path("getRedirectURL")
+		@GET
+		@Produces("application/json")
+		public Response getRedirectURL(@QueryParam("repoId") Integer repoId
+				,@QueryParam("path") String path
+				,@QueryParam("filename") String filename) {
+			Repository repository = RepositoryStore.getRepositoryById(repoId);
+			URI uri = CloudStorage.factory().getRedirectURL(repository, path, filename);
+			Gson gson = new Gson();
+			String json = gson.toJson(uri);
+			if (uri != null){
+				return Response.ok(json).build();	
+			} else {
+				return Response.ok("no signature").build();	
+			}
+		}
+		
+		//public boolean createBucket(Repository repo) throws ForbiddenException;
+		@Path("createBucket")
+		@GET
+		@Produces("application/json")
+		public Response createBucket(@QueryParam("repoId") Integer repoId) throws ForbiddenException{
+			Repository repository = RepositoryStore.getRepositoryById(repoId);
+			boolean boolVal = CloudStorage.factory().createBucket(repository);
+			Gson gson = new Gson();
+			String json = gson.toJson(boolVal);
+			if (boolVal == true){
+				return Response.ok(json).build();	
+			} else {
+				return Response.ok("Bucket not created").build();	
+			}
+		}
+
+				
+		//public String getType();
+		@Path("getType")
+		@GET
+		@Produces("application/json")
+		public Response getType(@QueryParam("repoId") Integer repoId) throws ForbiddenException{
+			Repository repository = RepositoryStore.getRepositoryById(repoId);
+			String type = CloudStorage.factory().getType(repository);
+			Gson gson = new Gson();
+			String json = gson.toJson(type);
+			if (type != null){
+				return Response.ok(json).build();	
+			} else {
+				return Response.ok("Bucket not created").build();	
+			}
 		}
 	}
