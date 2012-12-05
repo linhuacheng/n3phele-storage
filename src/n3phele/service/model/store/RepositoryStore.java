@@ -22,6 +22,11 @@ public class RepositoryStore {
 		repo2.setId(2l);
 		repositoryMap.put(2, repo2);
 		//add additional repositories
+		
+		Credential chanduAWSCreds1 = new Credential("AKIAJQ4UK2TUFDOI3ZQA", "pODzu2s8SfmgQE1LRRANS32zLLQjWqOBHxvoOcMP").encrypt();
+		Repository repo1 = new Repository("repo1", "repo1 description", chanduAWSCreds1, URI.create("https://s3.amazonaws.com"), "n3phele-test", "S3", null, true);
+		repo.setId(1l);
+		repositoryMap.put(3, repo);
 	}
 	public static final Repository getRepositoryById(Integer repoId) {
 		
