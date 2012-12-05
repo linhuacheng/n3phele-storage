@@ -148,7 +148,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
 		Credential credential = repo.getCredential().decrypt();
 		int retry = 3;
 		
-		setPermissions(repo, filename, false);
+//		setPermissions(repo, filename, false);
 		if(!filename.endsWith("/")) {
 			filename += "/";
 		}
