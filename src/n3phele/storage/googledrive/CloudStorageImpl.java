@@ -452,7 +452,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
     }
 
     @Override
-    public String getType() {
+    public String getType(Repository repo) {
         return CloudStorage.GDRIVE;
     }
 

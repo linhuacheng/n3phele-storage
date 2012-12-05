@@ -68,8 +68,11 @@ public abstract class CloudStorage implements CloudStorageInterface {
 		}
 
 		@Override
-		public String getType() {
-			throw new IllegalArgumentException();
+//		public String getType() {
+//			throw new IllegalArgumentException();
+//		}
+		public String getType(Repository repo) {
+			return factory(repo.getKind()).getType(repo);
 		}
 
 		@Override

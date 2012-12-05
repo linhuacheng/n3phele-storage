@@ -343,7 +343,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
 	}
 
 	
-	public String getType() {
+	public String getType(Repository repo) {
 		return "S3";
 	}
 	

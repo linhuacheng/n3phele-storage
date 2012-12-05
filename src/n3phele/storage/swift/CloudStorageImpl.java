@@ -264,7 +264,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
 		return result;
 	} 
 	
-	public String getType() {
+	public String getType(Repository repo) {
 		return "Swift";
 	}
 	@Override

@@ -20,7 +20,7 @@ public interface CloudStorageInterface {
 	public UploadSignature getUploadSignature(Repository repo, String name);
 	public boolean hasTemporaryURL(Repository repo);
 	public List<FileNode> getFileList(Repository repo, String prefix, int max);
-	public String getType();
+	public String getType(Repository repository);
 	public URI putObject(Repository item, InputStream uploadedInputStream,
 			String contentType, String destination);
 	public ObjectStream getObject(Repository item, String path, String name);
