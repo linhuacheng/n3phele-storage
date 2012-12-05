@@ -30,6 +30,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.internal.Mimetypes;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.BucketPolicy;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -124,8 +126,15 @@ public class CloudStorageImpl implements CloudStorageInterface {
 		AmazonS3Client s3 = new AmazonS3Client(new BasicAWSCredentials(credential.getAccount(), credential.getSecret()));
 		s3.setEndpoint(repo.getTarget().toString());
 		try {
+			System.out.println("In the deleteFile method... ");
+			System.out.println("bucket name ..."+repo.getRoot());
+			System.out.println("File Name ... "+filename);
+//			DeleteObjectRequest delreq = new DeleteObjectRequest(repo.getRoot(), filename);
+//			s3.deleteObject(delreq);
 			s3.deleteObject(repo.getRoot(), filename);
-			result = true;
+//			s3.deleteObject(new DeleteObjectRequest(repo.getRoot(), filename));
+			
+			return true;
 		} catch (AmazonServiceException e) {
 			log.log(Level.WARNING, "Service Error processing "+repo, e);
 		}  catch (AmazonClientException e) {
@@ -151,19 +160,22 @@ public class CloudStorageImpl implements CloudStorageInterface {
 			    ObjectListing objects = s3.listObjects(repo.getRoot(), filename);
 			    for (S3ObjectSummary objectSummary : objects.getObjectSummaries()) {
 			    	log.info("Delete "+repo.getRoot()+":"+objectSummary.getKey());
-			        s3.deleteObject(repo.getRoot(), objectSummary.getKey());
+			    	DeleteObjectRequest ob = new DeleteObjectRequest(repo.getRoot(), objectSummary.getKey());
+			        s3.deleteObject(ob);
 			    }	
 			    if(objects.isTruncated()) {
 			    	retry++;
 			    	log.info("Doing next portion");
 			    	continue;
 			    }
-				result = true;
-				break;
+				return true;
+//				break;
 			} catch (AmazonServiceException e) {
 				log.log(Level.WARNING, "Service Error processing "+repo, e);
 			}  catch (AmazonClientException e) {
 				log.log(Level.SEVERE, "Client Error processing "+repo, e);
+			}  catch (Exception e) {
+				log.log(Level.SEVERE, "Exception Occurred"+repo, e);
 			}
 		}
 		return result;
@@ -265,9 +277,10 @@ public class CloudStorageImpl implements CloudStorageInterface {
 		AmazonS3Client s3 = new AmazonS3Client(new BasicAWSCredentials(credential.getAccount(), credential.getSecret()));
 		s3.setEndpoint(repo.getTarget().toString());
 		try {
-			ObjectMetadata metadata = s3.getObjectMetadata(repo.getRoot(), filename);
-			log.info("Exists "+metadata.getContentType());
-			return true;
+			GetObjectRequest gom = new GetObjectRequest(repo.getRoot(), filename);
+			if(s3.getObject(gom)!=null)
+				return true;
+			log.info("Exists "+s3.getObject(gom).getObjectMetadata().getContentType());
 		} catch (AmazonServiceException e) {
 			log.log(Level.WARNING, "Service Error processing "+repo+" filename "+filename, e);
 		}  catch (AmazonClientException e) {
@@ -443,7 +456,43 @@ public class CloudStorageImpl implements CloudStorageInterface {
 	@Override
 	public URI putObject(Repository item, InputStream uploadedInputStream,
 			String contentType, String destination) {
-		throw new IllegalArgumentException("Not supported");
+
+		Credential credential = item.getCredential().decrypt();
+		AmazonS3Client s3 = new AmazonS3Client(new BasicAWSCredentials(credential.getAccount(), credential.getSecret()));
+		s3.setEndpoint(item.getTarget().toString());
+
+		ObjectMetadata ob = new ObjectMetadata();
+		ob.setContentType(contentType);
+		URI result = null;
+		
+		try {
+            System.out.println("Uploading a new object to S3 from a file\n");
+            s3.putObject(item.getRoot(), destination, uploadedInputStream, ob);
+            result = getURL(item, null, destination);
+            return result;
+//            return getMetadata(item, destination).getRepository();
+         } catch (AmazonServiceException ase) {
+            System.out.println("Caught an AmazonServiceException, which " +
+            		"means your request made it " +
+                    "to Amazon S3, but was rejected with an error response" +
+                    " for some reason.");
+            System.out.println("Error Message:    " + ase.getMessage());
+            System.out.println("HTTP Status Code: " + ase.getStatusCode());
+            System.out.println("AWS Error Code:   " + ase.getErrorCode());
+            System.out.println("Error Type:       " + ase.getErrorType());
+            System.out.println("Request ID:       " + ase.getRequestId());
+        } catch (AmazonClientException ace) {
+            System.out.println("Caught an AmazonClientException, which " +
+            		"means the client encountered " +
+                    "an internal error while trying to " +
+                    "communicate with S3, " +
+                    "such as not being able to access the network.");
+            System.out.println("Error Message: " + ace.getMessage());
+        }
+
+		return result;
+		
+//		throw new IllegalArgumentException("Not supported");
 	}
 
 	@Override
