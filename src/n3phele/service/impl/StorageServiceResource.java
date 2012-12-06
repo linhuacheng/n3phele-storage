@@ -228,19 +228,20 @@ public class StorageServiceResource  {
 		//public ObjectStream getObject(Repository item, String path, String name);
 		@Path("getObject")
 		@GET
-		@Produces("application/json")
+		//@Produces("application/json")
 		public Response getObject(@QueryParam("repoId") Integer repoId
 				, @QueryParam("path") String path,
 				@QueryParam("name") String name){
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
-			ObjectStream objstr = CloudStorage.factory().getObject(repository, path, name);
+			ObjectStream stream = CloudStorage.factory().getObject(repository, path, name);
 			Gson gson = new Gson();
-			String json = gson.toJson(objstr);
-			if (objstr != null){
-				return Response.ok(json).build();	
-			} else {
-				return Response.ok("no repository, url").build();	
-			}
+//			String json = gson.toJson(objstr);
+//			if (objstr != null){
+//				return Response.	
+//			} else {
+//				return Response.ok("no repository, url").build();	
+//			}
+			return Response.ok(stream.getOutputStream()).type(stream.getContextType()).build();
 		}
 		
 		//public UploadSignature getUploadSignature(Repository repo, String name);

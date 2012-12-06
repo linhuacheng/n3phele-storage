@@ -32,7 +32,7 @@ public class GDriveFileListTest {
     @BeforeClass
     public static void setUp() throws Exception {
         unit = new CloudStorageImpl();
-        repo = RepositoryStore.getRepositoryById(2);
+        repo = RepositoryStore.getRepositoryById(3);
 
     }
     @Test
