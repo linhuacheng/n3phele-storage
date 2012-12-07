@@ -58,11 +58,11 @@ public class StorageServiceResource  {
 		}
 		
 		
-		@Path("deleteFile/{fileName}")
+		@Path("deleteFile")
 		@DELETE
 		@Produces("text/html")
 		public Response deleteFile(@QueryParam("repoId") Integer repoId
-				, @PathParam("fileName") String fileName)
+				, @QueryParam("file") String fileName)
 		{
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
 			boolean result = false;
@@ -75,15 +75,15 @@ public class StorageServiceResource  {
 		}
 		
 		
-		@Path("deleteFolder/{fileName}")
+		@Path("deleteFolder")
 		@DELETE
 		@Produces("text/html")
 		public Response deleteFolder(@QueryParam("repoId") Integer repoId
-				, @PathParam("fileName") String fileName)
+				, @QueryParam("folder") String folderName)
 		{
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
 			boolean result = false;
-			result = CloudStorage.factory().deleteFolder(repository, fileName);
+			result = CloudStorage.factory().deleteFolder(repository, folderName);
 			if(result)
 				return Response.status(Status.OK).build();
 			else
@@ -93,7 +93,7 @@ public class StorageServiceResource  {
 		@Path("setPermissions")
 		@POST
 		@Produces("text/html")
-		public Response setPermissions(@QueryParam("fileName") String fileName
+		public Response setPermissions(@QueryParam("file") String fileName
 				, @QueryParam("repoId") Integer repoId
 				, @QueryParam("isPublic") boolean isPublic)
 		{
@@ -109,7 +109,7 @@ public class StorageServiceResource  {
 		@Path("checkExists")
 		@GET
 		@Produces("text/html")
-		public Response checkExists(@QueryParam("repoId") Integer repoId, @QueryParam("fileName") String fileName) {
+		public Response checkExists(@QueryParam("repoId") Integer repoId, @QueryParam("file") String fileName) {
 			Repository repository = RepositoryStore.getRepositoryById(repoId);	
 			boolean result=false;
 			result = CloudStorage.factory().checkExists(repository, fileName);
@@ -136,7 +136,7 @@ public class StorageServiceResource  {
 		@Path("putObject")
 		@POST
 		@Produces("text/html")
-		public Response putObject(@QueryParam("fileName") String fileName
+		public Response putObject(@QueryParam("file") String fileName
 				, @QueryParam("repoId") Integer repoId
 				, @QueryParam("isPublic") boolean isPublic
 				, @Context HttpServletRequest request) throws FileUploadException, IOException
@@ -195,7 +195,7 @@ public class StorageServiceResource  {
 
 		//public FileNode getMetadata(Repository repo, String filename)
 		public Response getMetadata(@QueryParam("repoId") Integer repoId
-				, @QueryParam("filename") String filename){
+				, @QueryParam("file") String filename){
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
 			System.out.println("HP meta data ...... in service");
 			FileNode filenode = CloudStorage.factory().getMetadata(repository, filename);
@@ -215,7 +215,7 @@ public class StorageServiceResource  {
 		@Produces("application/json")
 		public Response getURL(@QueryParam("repoId") Integer repoId
 				, @QueryParam("path") String path,
-				@QueryParam("name") String name){
+				@QueryParam("file") String name){
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
 			URI uri = CloudStorage.factory().getURL(repository, path, name);
 			Gson gson = new Gson();
@@ -233,7 +233,7 @@ public class StorageServiceResource  {
 		//@Produces("application/json")
 		public Response getObject(@QueryParam("repoId") Integer repoId
 				, @QueryParam("path") String path,
-				@QueryParam("name") String name){
+				@QueryParam("file") String name){
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
 			ObjectStream stream = CloudStorage.factory().getObject(repository, path, name);
 			Gson gson = new Gson();
@@ -251,7 +251,7 @@ public class StorageServiceResource  {
 		@GET
 		@Produces("application/json")
 		public Response getUploadSignature(@QueryParam("repoId") Integer repoId
-				,@QueryParam("name") String name){
+				,@QueryParam("file") String name){
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
 			UploadSignature upsign = CloudStorage.factory().getUploadSignature(repository, name);
 			Gson gson = new Gson();
@@ -269,7 +269,7 @@ public class StorageServiceResource  {
 		@Produces("application/json")
 		public Response getRedirectURL(@QueryParam("repoId") Integer repoId
 				,@QueryParam("path") String path
-				,@QueryParam("filename") String filename) {
+				,@QueryParam("file") String filename) {
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
 			URI uri = CloudStorage.factory().getRedirectURL(repository, path, filename);
 			Gson gson = new Gson();
