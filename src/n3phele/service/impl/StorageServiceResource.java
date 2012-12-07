@@ -12,20 +12,11 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.util.Streams;
-
-import com.google.gson.Gson;
 
 import n3phele.service.core.ForbiddenException;
 import n3phele.service.model.repository.FileNode;
@@ -34,6 +25,14 @@ import n3phele.service.model.repository.UploadSignature;
 import n3phele.service.model.store.RepositoryStore;
 import n3phele.storage.CloudStorage;
 import n3phele.storage.ObjectStream;
+
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.util.Streams;
+
+import com.google.gson.Gson;
 
 
 
@@ -68,9 +67,9 @@ public class StorageServiceResource  {
 			boolean result = false;
 			result = CloudStorage.factory().deleteFile(repository, fileName);
 			if(result)
-				return Response.status(Status.OK).build();
+				return Response.noContent().build();
 			else
-				return Response.ok("Unable to delete or file not found").build();
+				return Response.notModified("Unable to delete or file not found").build();
 			
 		}
 		
@@ -85,9 +84,9 @@ public class StorageServiceResource  {
 			boolean result = false;
 			result = CloudStorage.factory().deleteFolder(repository, folderName);
 			if(result)
-				return Response.status(Status.OK).build();
+				return Response.noContent().build();
 			else
-				return Response.status(Status.CONFLICT).build();
+				return Response.notModified("Unable to delete or folder not found").build();
 		}
 
 		@Path("setPermissions")
@@ -101,9 +100,9 @@ public class StorageServiceResource  {
 			boolean result = false;
 			result = CloudStorage.factory().setPermissions(repository, fileName, true);
 			if(result)
-				return Response.status(Status.OK).build();
+				return Response.ok("Permissions set").build();
 			else
-				return Response.status(Status.CONFLICT).build();
+				return Response.notModified("File not found").build();
 		}
 		
 		@Path("checkExists")
@@ -114,9 +113,9 @@ public class StorageServiceResource  {
 			boolean result=false;
 			result = CloudStorage.factory().checkExists(repository, fileName);
 			if(result)
-				return Response.status(Status.OK).build();
+				return Response.ok("File exists").build();
 			else
-				return Response.status(Status.FORBIDDEN).build();
+				return Response.ok("File do not exist").build();
 		}
 		
 		
@@ -128,9 +127,9 @@ public class StorageServiceResource  {
 			boolean result=false;
 			result = CloudStorage.factory().hasTemporaryURL(repository);
 			if(result)
-				return Response.status(Status.OK).build();
+				return Response.ok("Has temporary URL").build();
 			else
-				return Response.status(Status.FORBIDDEN).build();
+				return Response.ok("Does not have temporary URL").build();
 		}
 
 		@Path("putObject")
@@ -143,7 +142,6 @@ public class StorageServiceResource  {
 		{
 			Response response = Response.noContent().build();
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
-			boolean result = false;
 			ServletFileUpload upload = new ServletFileUpload();
 			FileItemIterator iterator = upload.getItemIterator(request);
 			log.info("FileSizeMax ="+upload.getFileSizeMax()+" SizeMax="+upload.getSizeMax()+" Encoding "+upload.getHeaderEncoding());
@@ -236,13 +234,6 @@ public class StorageServiceResource  {
 				@QueryParam("file") String name){
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
 			ObjectStream stream = CloudStorage.factory().getObject(repository, path, name);
-			Gson gson = new Gson();
-//			String json = gson.toJson(objstr);
-//			if (objstr != null){
-//				return Response.	
-//			} else {
-//				return Response.ok("no repository, url").build();	
-//			}
 			return Response.ok(stream.getOutputStream()).type(stream.getContextType()).build();
 		}
 		
