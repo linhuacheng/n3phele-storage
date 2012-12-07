@@ -6,6 +6,7 @@
 package n3phele.service.model.core;
 
 import java.io.UnsupportedEncodingException;
+import javax.xml.bind.annotation.*;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,7 +29,7 @@ import com.sun.jersey.core.util.Base64;
 
 
 @XmlRootElement(name = "Credential")
-@XmlType(name = "Credential", propOrder = { "account", "secret" })
+//@XmlType(name = "Credential", propOrder = { "account", "secret" })
 public class Credential {
 	final private static Logger log = Logger.getLogger(Credential.class
 			.getName());
@@ -182,6 +183,7 @@ public class Credential {
 	/**
 	 * @return the account
 	 */
+	@XmlElement(name = "account")
 	public String getAccount() {
 		return account;
 	}
@@ -197,6 +199,7 @@ public class Credential {
 	/**
 	 * @return the secret
 	 */
+	@XmlElement(name = "secret")
 	public String getSecret() {
 		return secret;
 	}

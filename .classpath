@@ -70,5 +70,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/transaction-api-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xpp3-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/google-http-client-jackson2-1.11.0-beta.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/swagger-annotations_2.9.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/swagger-core_2.9.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/swagger-jaxrs_2.9.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/swagger-jaxrs-utils_2.9.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
