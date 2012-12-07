@@ -141,6 +141,7 @@ public class StorageServiceResource  {
 				, @QueryParam("isPublic") boolean isPublic
 				, @Context HttpServletRequest request) throws FileUploadException, IOException
 		{
+			Response response = Response.noContent().build();
 			Repository repository = RepositoryStore.getRepositoryById(repoId);
 			boolean result = false;
 			ServletFileUpload upload = new ServletFileUpload();
@@ -155,14 +156,15 @@ public class StorageServiceResource  {
 					InputStream stream = item.openStream();   
 					log.warning("Got an uploaded file: " + item.getFieldName() +", name = " + item.getName()+" content "+item.getContentType()); 
 					URI target = CloudStorage.factory().putObject(repository, stream, item.getContentType(), fileName);
-					Response.created(target).build();
+					response = Response.created(target).build();
 				}
 			}
+			return response;
 //			result = CloudStorage.factory().setPermissions(repository, fileName, true);
-			if(result)
-				return Response.status(Status.OK).build();
-			else
-				return Response.ok("Unable to upload").build();
+//			if(result)
+//				return Response.status(Status.OK).build();
+//			else
+//				return Response.ok("Unable to upload").build();
 		}
 
 		

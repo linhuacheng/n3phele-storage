@@ -1,6 +1,8 @@
 package n3phele.storage.S3;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriBuilder;
 
 import com.amazonaws.AmazonClientException;
@@ -35,6 +39,7 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.sun.jersey.core.util.Base64;
 
@@ -497,7 +502,51 @@ public class CloudStorageImpl implements CloudStorageInterface {
 
 	@Override
 	public ObjectStream getObject(Repository item, String path, String name) {
-		throw new IllegalArgumentException("Not supported");
+		String contentType = null;
+		Credential credential = item.getCredential().decrypt();
+
+		AmazonS3Client s3 = new AmazonS3Client(new BasicAWSCredentials(credential.getAccount(), credential.getSecret()));
+		s3.setEndpoint(item.getTarget().toString());
+		try {
+			GetObjectRequest gom = new GetObjectRequest(item.getRoot(), name);
+			System.out.println(gom.toString());
+			if(s3.getObject(gom)!=null)
+			{
+				System.out.println("inside if block ...");
+				S3Object s3Object = new S3Object();
+				s3Object = s3.getObject(gom);
+				contentType = s3Object.getObjectMetadata().getContentType();
+				final InputStream in = s3Object.getObjectContent();
+
+				System.out.println("after getting inputstream ... ");
+				StreamingOutput so = new StreamingOutput() {
+
+						@Override
+						public void write(OutputStream arg0) throws IOException,
+								WebApplicationException {
+							// TODO Auto-generated method stub
+							System.out.println("in the streamingoutput");
+							int i = 0;
+	                        while((i = in.read()) != - 1){
+	                        	System.out.println(i);
+	                            arg0.write(i);
+	                        }
+						}
+					}; 
+					
+					System.out.println(so.toString());
+				ObjectStream obStream = new ObjectStream(so, contentType);	
+				return obStream;
+			}
+				
+		} catch (AmazonServiceException e) {
+			log.log(Level.WARNING, "Service Error processing "+item+" filename "+name, e);
+		}  catch (AmazonClientException e) {
+			log.log(Level.SEVERE, "Client Error processing "+item+" filename "+name, e);
+		}
+
+		return null;
+
 	}
 
 	@Override
