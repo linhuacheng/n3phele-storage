@@ -29,6 +29,17 @@ public class RepositoryStore {
 		testGoogleRepo.setId(3l);
 		repositoryMap.put(3, testGoogleRepo);
 		
+		Credential nikithaAWSCredential = new Credential("AKIAIW3EDEK47FQ2GY4Q", "FNmSCDO1SIC1pIezp8EjFU3AJByy0T5cuGXgp6s9").encrypt();
+		Repository repo4 = new Repository("s3-desktop", "n3phele desktop on Amazon S3", nikithaAWSCredential, URI.create("https://s3.amazonaws.com"), "nikitha", "S3", URI.create("https://s3.amazonaws.com"), true);
+		repositoryMap.put(4, repo4);
+		
+		//add additional repositories
+		Credential swiftCredential = new Credential("91855197683350:JU7UBEYJ2KWD5C2HK1GA", "U1P73anxu2I2+NQ4XkTG0LyfMdHoBacv2rkdZ6ht").encrypt();
+		Repository repo5 = new Repository("priyanka", "n3phele desktop on Swift", swiftCredential, URI.create("https://region-a.geo-1.identity.hpcloudsvc.com:35357"), "priyanka", "Swift", null, true);
+		repositoryMap.put(5, repo5);
+		
+		
+		
 	}
 	public static final Repository getRepositoryById(Integer repoId) {
 		
