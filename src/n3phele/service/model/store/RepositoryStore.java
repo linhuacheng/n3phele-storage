@@ -30,7 +30,7 @@ public class RepositoryStore {
 		repositoryMap.put(3, testGoogleRepo);
 		
 		Credential nikithaAWSCredential = new Credential("AKIAIW3EDEK47FQ2GY4Q", "FNmSCDO1SIC1pIezp8EjFU3AJByy0T5cuGXgp6s9").encrypt();
-		Repository repo4 = new Repository("s3-desktop", "n3phele desktop on Amazon S3", nikithaAWSCredential, URI.create("https://s3.amazonaws.com"), "nikitha", "S3", URI.create("https://s3.amazonaws.com"), true);
+		Repository repo4 = new Repository("s3-desktop", "n3phele desktop on Amazon S3", nikithaAWSCredential, URI.create("https://s3.amazonaws.com"), "n3phele-1606014", "S3", null, true);
 		repositoryMap.put(4, repo4);
 		
 		//add additional repositories
