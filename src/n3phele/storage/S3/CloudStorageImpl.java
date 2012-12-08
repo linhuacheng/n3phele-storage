@@ -144,6 +144,9 @@ public class CloudStorageImpl implements CloudStorageInterface {
 			log.log(Level.WARNING, "Service Error processing "+repo, e);
 		}  catch (AmazonClientException e) {
 			log.log(Level.SEVERE, "Client Error processing "+repo, e);
+		}  catch (Exception e) {
+//			log.log(Level.SEVERE, "Client Error processing "+repo, e);
+			return true;
 		}
 		return result;
 	}
@@ -181,6 +184,7 @@ public class CloudStorageImpl implements CloudStorageInterface {
 				log.log(Level.SEVERE, "Client Error processing "+repo, e);
 			}  catch (Exception e) {
 				log.log(Level.SEVERE, "Exception Occurred"+repo, e);
+				return true;
 			}
 		}
 		return result;
@@ -271,6 +275,9 @@ public class CloudStorageImpl implements CloudStorageInterface {
 		}  catch (IllegalArgumentException e) {
 			log.log(Level.SEVERE, "parse error ", e);
 			log.log(Level.SEVERE, "cause", e.getCause());
+		}  catch (Exception e) {
+			log.log(Level.SEVERE, "Exception Occurred"+repo, e);
+			return true;
 		}
 		return false;
 	}
@@ -354,18 +361,25 @@ public class CloudStorageImpl implements CloudStorageInterface {
 	
 	@Override
 	public URI getRedirectURL(Repository item, String path, String filename) {
+		URI uri = null;
 		UriBuilder result = null;
-		result = UriBuilder.fromUri(item.getTarget());
-		result.path(item.getRoot()).path(path).path(filename);
-		String expires = Long.toString((Calendar.getInstance().getTimeInMillis()/1000) + 60*60);
-		String stringToSign = "GET\n\n\n"+expires+"\n"+result.build().getPath().replace(" ", "%20");
-		String signature = signS3QueryString(stringToSign, item.getCredential());
+		if(checkExists(item, filename))
+		{
+			result = UriBuilder.fromUri(item.getTarget());
+			result.path(item.getRoot()).path(path).path(filename);
+			String expires = Long.toString((Calendar.getInstance().getTimeInMillis()/1000) + 60*60);
+			String stringToSign = "GET\n\n\n"+expires+"\n"+result.build().getPath().replace(" ", "%20");
+			String signature = signS3QueryString(stringToSign, item.getCredential());
 
-		result.queryParam("AWSAccessKeyId", item.getCredential().decrypt().getAccount());
-		result.queryParam("Expires", expires);
-		result.queryParam("Signature", signature);
-		log.warning("Access "+result.build().getPath()+ " "+result.build());
-		return result.build();
+			result.queryParam("AWSAccessKeyId", item.getCredential().decrypt().getAccount());
+			result.queryParam("Expires", expires);
+			result.queryParam("Signature", signature);
+			log.warning("Access "+result.build().getPath()+ " "+result.build());
+			return result.build();
+		}
+		else
+			return uri;
+				
 	}
 
 	@Override
